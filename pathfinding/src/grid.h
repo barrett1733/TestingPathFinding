@@ -9,8 +9,11 @@ protected:
 	T ** grid;
 
 public:
-	Grid(int size_x, int size_y) : size_x(size_x), size_y(size_y)
+	Grid(int size_x, int size_y)
 	{
+		this->size_x = size_x;
+		this->size_y = size_y;
+
 		grid = new T*[size_y];
 		for (int y = 0; y < size_y; y++)
 			grid[y] = new T[size_x];
