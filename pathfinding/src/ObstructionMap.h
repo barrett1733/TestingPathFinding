@@ -1,5 +1,4 @@
-#ifndef OBSTRUCTION_MAP_H_
-#define OBSTRUCTION_MAP_H_
+#pragma once
 
 #include "position.h"
 #include "grid.h"
@@ -38,5 +37,3 @@ public:
 		return os;
 	}
 };
-
-#endif

@@ -12,16 +12,12 @@ Position::Position() :
 Position::Position(int x, int y) :
 	x(x),
 	y(y)
-{
-	//forceSanity();
-}
+{}
 
 Position::Position(const Position & position) :
 	x(position.x),
 	y(position.y)
-{
-	//forceSanity();
-}
+{}
 
 bool Position::checkSanity(int x, int y)
 {
@@ -49,8 +45,6 @@ Position& Position::operator= (const Position & position)
 {
 	x = position.x;
 	y = position.y;
-
-	//forceSanity();
 
 	return *this;
 }
@@ -81,7 +75,6 @@ bool Position::setY(int y)
 {
 	return set(x, y);
 }
-
 
 int Position::getX()
 {

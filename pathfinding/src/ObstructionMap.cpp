@@ -1,4 +1,4 @@
-#include "obstruction-map.h"
+#include "ObstructionMap.h"
 
 ObstructionMap::ObstructionMap(int size_x, int size_y) :
 	Grid<ObstructionType>(size_x, size_y)

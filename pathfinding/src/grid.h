@@ -1,17 +1,14 @@
-#ifndef GRID_H_
-#define GRID_H_
-
+#pragma once
 #include "position.h"
+#include "IGrid.h"
 
 template <typename T>
-class Grid
+class Grid : public IGrid
 {
 protected:
 	T ** grid;
 
 public:
-	int size_x, size_y;
-
 	Grid(int size_x, int size_y) : size_x(size_x), size_y(size_y)
 	{
 		grid = new T*[size_y];
@@ -47,5 +44,3 @@ public:
 		return os;
 	}
 };
-
-#endif

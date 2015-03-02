@@ -1,11 +1,4 @@
-//  Position Class Definition
-// Maintains an x,y pair corresponding to a position on the map.
-// Provides a move() method for adjusting the position via Direction values.
-// Enforces boundaries if maximums are set.
-//
-
-#ifndef POSITION_H_
-#define POSITION_H_
+#pragma once
 
 #include <math.h>
 #include <iostream>
@@ -97,5 +90,3 @@ public:
 	static int max_x;
 	static int max_y;
 };
-
-#endif
