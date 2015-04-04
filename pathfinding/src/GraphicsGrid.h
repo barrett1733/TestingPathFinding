@@ -1,10 +1,10 @@
 #pragma once
 #include "GraphicsObject.h"
-#include "IGrid.h"
+#include "ObstructionMap.h"
 
 class GraphicsGrid : public GraphicsObject
 {
 public:
 	static void drawGrid();
-	static void draw(IGrid*, cinder::Rectf, cinder::ColorA);
+	static void draw(ObstructionMap&, cinder::Rectf, cinder::ColorA);
 };

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBSTRUCTION_MAP_H_
+#define OBSTRUCTION_MAP_H_
 
 #include "position.h"
 #include "grid.h"
@@ -10,8 +11,6 @@ enum ObstructionType
 	OT_CONSIDERED
 };
 
-typedef Grid<ObstructionType> ObstructionMap;
-/*
 class ObstructionMap : public Grid<ObstructionType>
 {
 public:
@@ -23,15 +22,15 @@ public:
 
 	friend std::ostream& operator<<(std::ostream & os, const ObstructionMap & map)
 	{
-		for (int y = 0; y < map.size_y; y++)
+		for (int y = 0; y < map.getHeight(); y++)
 		{
-			for (int x = 0; x < map.size_x; x++)
+			for (int x = 0; x < map.getWidth(); x++)
 			{
-				if (map.grid[y][x] == OT_EMPTY)
+				if (map.at(x,y) == OT_EMPTY)
 					os << ".";
-				else if (map.grid[y][x] == OT_OBSTRUCTED)
+				else if (map.at(x, y) == OT_OBSTRUCTED)
 					os << "X";
-				else if (map.grid[y][x] == OT_CONSIDERED)
+				else if (map.at(x, y) == OT_CONSIDERED)
 					os << "o";
 			}
 			os << std::endl;
@@ -39,4 +38,5 @@ public:
 		return os;
 	}
 };
-*/
+
+#endif

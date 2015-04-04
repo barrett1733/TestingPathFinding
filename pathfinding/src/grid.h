@@ -1,22 +1,22 @@
 #pragma once
 #include "position.h"
-#include "IGrid.h"
 
 template <typename T>
-class Grid : public IGrid
+class Grid
 {
 protected:
 	T ** grid;
+	int sizeX, sizeY;
 
 public:
-	Grid(int size_x, int size_y)
+	Grid(int sizeX, int sizeY)
 	{
-		this->size_x = size_x;
-		this->size_y = size_y;
+		this->sizeX = sizeX;
+		this->sizeY = sizeY;
 
-		grid = new T*[size_y];
-		for (int y = 0; y < size_y; y++)
-			grid[y] = new T[size_x];
+		grid = new T*[sizeY];
+		for (int y = 0; y < sizeY; y++)
+			grid[y] = new T[sizeX];
 	}
 
 	void set(Position position, T value)
@@ -24,7 +24,7 @@ public:
 		int x = position.getX();
 		int y = position.getY();
 
-		if (x >= 0 && x < size_x && y >= 0 && y < size_y)
+		if (x >= 0 && x < sizeX && y >= 0 && y < sizeY)
 			grid[y][x] = value;
 	}
 
@@ -32,7 +32,7 @@ public:
 	{
 		int x = pos.getX();
 		int y = pos.getY();
-		if (x >= 0 && x < size_x && y >= 0 && y < size_y)
+		if (x >= 0 && x < sizeX && y >= 0 && y < sizeY)
 			return grid[pos.getY()][pos.getX()];
 	}
 

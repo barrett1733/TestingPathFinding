@@ -1,5 +1,5 @@
-#include "ObstructionMap.h"
-/*
+#include "obstruction-map.h"
+
 ObstructionMap::ObstructionMap(int size_x, int size_y) :
 	Grid<ObstructionType>(size_x, size_y)
 {
@@ -26,4 +26,3 @@ bool ObstructionMap::isOpen(Position position)
 {
 	return get(position) == OT_EMPTY;
 }
-*/
