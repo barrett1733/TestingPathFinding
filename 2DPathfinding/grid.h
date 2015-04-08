@@ -10,16 +10,23 @@ class Grid
 	int sizeX, sizeY;
 
 public:
-	Grid() : graph(NULL), sizeX(0), sizeY(0)  {}
+	Grid() : grid(NULL), sizeX(0), sizeY(0)  {}
 	Grid(int x, int y) { alloc(x, y); }
 	~Grid() { dealloc(); }
+	Grid(Grid& grid)
+	{
+		alloc(grid.getWidth(), grid.getHeight());
+		for (int x = 0; x < grid.getWidth(); x++)
+			for (int y = 0; y < grid.getHeight(); y++)
+				at(x, y) = grid.at(x, y);
+	}
 
 	int getWidth() const { return sizeX; }
 	int getHeight() const { return sizeY; }
 
 	void alloc(int x, int y)
 	{
-		if (!graph)
+		if (!grid)
 		{
 			sizeX = x;
 			sizeY = y;
@@ -31,7 +38,7 @@ public:
 
 	void dealloc()
 	{
-		if (graph)
+		if (grid)
 		{
 			for (int y = 0; y < sizeY; y++)
 			{
@@ -45,7 +52,7 @@ public:
 
 	T& at(Position pos)
 	{
-		return at(pos.getX(), pos.getY())
+		return at(pos.getX(), pos.getY());
 	}
 
 	T& at(int x, int y)
@@ -53,7 +60,20 @@ public:
 		if (x >= 0 && x < sizeX && y >= 0 && y < sizeY)
 			return grid[y][x];
 		else
-			throw std::out_of_range("Grid<>::at() : Out of Range")
+			throw std::out_of_range("Grid<>::at() : Out of Range");
+	}
+
+	const T& at(Position pos) const
+	{
+		return at(pos.getX(), pos.getY())
+	}
+
+	const T& at(int x, int y) const
+	{
+		if (x >= 0 && x < sizeX && y >= 0 && y < sizeY)
+			return grid[y][x];
+		else
+			throw std::out_of_range("Grid<>::at() : Out of Range");
 	}
 
 	// TODO
@@ -61,7 +81,7 @@ public:
 	{
 		/*
 		if (graph == NULL)
-			alloc(x, y);
+		alloc(x, y);
 		else if (x != sizeX && y != sizeY)
 		{
 
@@ -69,21 +89,5 @@ public:
 		*/
 	}
 
-	friend std::ostream& operator<<(std::ostream & os, const Grid & map)
-	{
-		if (!graph)
-			os << "Not Allocated" << std::endl;
-		else
-		{
-			for(int y = 0; y < map.size; y ++)
-			{
-				for(int x = 0; x < map.size; x ++)
-					os << map.grid[y][x];
-				os << std::endl;
-			}
-		}
-		return os;
-	}
 };
-
 #endif

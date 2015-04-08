@@ -64,7 +64,7 @@ struct NodeCompare
 {
 	bool operator() (Node const &a, Node const &b)
 	{
-		return a.fcost > b.fcost;
+		return a.fcost < b.fcost;
 	}
 };
 

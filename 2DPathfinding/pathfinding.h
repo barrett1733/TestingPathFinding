@@ -5,7 +5,6 @@
 #include <math.h>
 #include <vector>
 #include <map>
-#include <queue>
 #include "obstruction-map.h"
 #include "nodelist.h"
 #include "nodemap.h"
@@ -13,7 +12,6 @@
 
 typedef std::vector<Position> Path;
 typedef std::vector<Node> NodeVector;
-typedef std::priority_queue<Node, NodeVector, NodeCompare> NodeQueue;
 
 class Pathfinding
 {
@@ -28,7 +26,6 @@ class Pathfinding
 	// A* Modified variables
 	bool searchLimiter;
 	NodeList searchList;
-	NodeQueue searchQueue;
 	int searchMax, searchCounter;
 	NodeRef closestToGoalNode;
 
@@ -58,9 +55,6 @@ public:
 	Position findNextPositionAStarExper(Position start, Position goal, ObstructionMap* obstructionMap);
 	Position findNextPositionAStarModified(Position start, Position goal, ObstructionMap* obstructionMap);
 	Position findNextPositionAStar(Position start, Position goal, ObstructionMap* obstructionMap);
-	static void printPathAsCoordinates(Path& poslist);
-	static void printPathAsGrid(Path& poslist);
-	static void printPathAsGrid(Path& poslist, ObstructionMap* obsMap);
 };
 
 

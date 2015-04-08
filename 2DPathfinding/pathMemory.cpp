@@ -6,7 +6,7 @@ PathMemory::PathMemory() : currentPath(NULL), pathMap(Position::max_x + 1, Posit
 	pathMemories.reserve(Position::max_x * Position::max_y);
 	for (int i = 0; i < Position::max_x + 1; i++)
 		for (int j = 0; j < Position::max_x + 1; j++)
-			pathMap.set(Position(i,j), UNKNOWN);
+			pathMap.at(Position(i,j)) = UNKNOWN;
 }
 
 PathMemory::~PathMemory()
@@ -107,9 +107,9 @@ Position PathMemory::moveOnPath(Position current, Position next, Position end)
 		{
 			return getPrevPosition();
 		}
-		else if (pathMap.get(next) == VISITED)
+		else if (pathMap.at(next) == VISITED)
 		{
-			pathMap.set(current, VISITED);
+			pathMap.at(current) = VISITED;
 			if (currentPath->path.size() >= 2)
 			{
 				Position pos = *(currentPath->path.end() - 1);
@@ -121,7 +121,7 @@ Position PathMemory::moveOnPath(Position current, Position next, Position end)
 		else
 		{
 			currentPath->path.push_back(current);
-			pathMap.set(current, VISITED);
+			pathMap.at(current) = VISITED;
 			return next;
 		}
 	}

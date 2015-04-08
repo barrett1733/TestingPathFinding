@@ -105,4 +105,6 @@ void runTests(Position start, Position goal, ObstructionMap* obsMap, int printfl
 		runHumanTest(start, goal, obsMap, printflags);
 	if (searchFlag & SEARCH_ASTAREXP || searchFlag & SEARCH_ALL)
 		runAStarExperTest(start, goal, obsMap, printflags);
+
+	std::cout << std::endl << "Tests finished" << std::endl;
 }

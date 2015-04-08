@@ -17,9 +17,9 @@ void Movement::moveMobileEntity(MobileEntity* entity, ObstructionMap* obsMap)
 
 	if (!obsMap->isConsidered(newPos))
 	{
-		obsMap->set(currentPos, OT_EMPTY);
+		obsMap->at(currentPos) = OT_EMPTY;
 		entity->setPosition(newPos);
-		obsMap->set(newPos, OT_CONSIDERED);
+		obsMap->at(newPos) = OT_CONSIDERED;
 	}
 }
 
@@ -29,7 +29,7 @@ double Movement::evaluateScore(MobileEntity* entity, Position nextPos, Obstructi
 	Position pos = entity->getPosition();
 	Position target = entity->getTarget()->getPosition();
 	
-	switch (entity->pathMap.get(nextPos))
+	switch (entity->pathMap.at(nextPos))
 	{
 	case PathMemory::PathMapState::VISITED:
 		score -= 4;

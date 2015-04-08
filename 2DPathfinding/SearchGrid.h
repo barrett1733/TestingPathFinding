@@ -1,17 +1,17 @@
-#ifndef NODEMAP_H_
-#define NODEMAP_H_
-
-#include "grid.h"
+#pragma once
 #include "node.h"
+#include "grid.h"
 
-class NodeMap
+class SearchGrid
 {
 	int x_size, y_size;
 	Grid<Node> graph;
 	Grid<bool> existsGraph;
+	Node* start;
+	Node* current;
 public:
-	NodeMap(int x_size, int y_size);
-	~NodeMap();
+	SearchGrid(int x_size, int y_size);
+	~SearchGrid();
 	void clear();
 	bool checkExist(Position);
 	void markExist(Position);
@@ -19,5 +19,3 @@ public:
 	Node& at(Node*);
 };
 
-
-#endif

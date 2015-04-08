@@ -23,6 +23,9 @@ int main()
 	
 	/////////////////// Small Test
 	
+	Position::max_x = 10;
+	Position::max_y = 10;
+
 	Position start(0, 0);
 	Position goal(5, 0);
 

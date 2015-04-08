@@ -15,25 +15,23 @@ Path Pathfinding::findPathAStarExper(Position start, Position goal, ObstructionM
 	goalReached = false;
 	searchCounter = 0;
 
-	indexGraph.set(start, NULL, 0, heursticCost(neighborPos, goal));
+	indexGraph.at(start) = Node(start, NULL, 0, heursticCost(neighborPos, goal));
+	indexGraph.markExist(start);
 
-	//searchList.push(&indexGraph[start]);
-	searchQueue.push(indexGraph[start]);
+	searchList.push(&indexGraph.at(start));
 
-	closestToGoalNode = &indexGraph[start];
+	closestToGoalNode = &indexGraph.at(start);
 	curNode = NULL;
 
 	while (!goalReached && (!searchLimiter || searchCounter <= searchMax))
 	{
 		searchCounter++;
 
-		//if (searchList.empty())
-		if (searchQueue.empty())
+		if (searchList.empty())
 			return constructPath(closestToGoalNode);
 
-		//curNode = searchList.pop();
-		curNode = &searchQueue.top();
-		searchQueue.pop();
+		curNode = searchList.pop();
+		std::cout << *curNode << std::endl;
 
 		// this is questionable
 		if (curNode->fcost < closestToGoalNode->fcost)
@@ -51,31 +49,28 @@ Path Pathfinding::findPathAStarExper(Position start, Position goal, ObstructionM
 				neighborPos.moveUnchecked(dir);
 				if (neighborPos.checkSanity() && obstructionMap->isOpen(neighborPos))
 				{
-					if (indexGraph.exists(neighborPos))
+					if (indexGraph.checkExist(neighborPos))
 					{
-						if (curNode->gcost < indexGraph[neighborPos].gcost)
+						if (curNode->gcost < indexGraph.at(neighborPos).gcost)
 						{
-							indexGraph[neighborPos].gcost = curNode->gcost;
-							indexGraph[neighborPos].fcost = indexGraph[neighborPos].gcost + heursticCost(neighborPos, goal);
-							indexGraph[neighborPos].parentNode = curNode;
+							indexGraph.at(neighborPos) = Node(neighborPos, curNode, curNode->gcost, heursticCost(neighborPos, goal));
+							indexGraph.markExist(neighborPos);
 						}
 					}
 					else
 					{
-						indexGraph.set(
-							neighborPos,
-							curNode,
-							curNode->gcost + pathCost(curNode->pos, neighborPos),
-							curNode->gcost + pathCost(curNode->pos, neighborPos) + heursticCost(neighborPos, goal)
-							);
-						//searchList.push(&indexGraph[neighborPos]);
-						searchQueue.push(indexGraph[neighborPos]);
+						double travelCost = pathCost(curNode->pos, neighborPos);
+						double newgcost = curNode->gcost + travelCost;
+						double hcost = heursticCost(neighborPos, goal);
+
+						indexGraph.at(neighborPos) = Node(neighborPos, curNode, newgcost, newgcost + hcost);
+						indexGraph.markExist(neighborPos);
+						searchList.push(&indexGraph.at(neighborPos));
 					}
 				}
 			}
 		}
 	}
-	std::cout << "finished one" << std::endl;
 	return constructPath(curNode);
 }
 
@@ -84,11 +79,12 @@ Path Pathfinding::findPathAStarModified(Position start, Position goal, Obstructi
 	goalReached = false;
 	searchCounter = 0;
 
-	indexGraph.set(start, NULL, 0, heursticCost(neighborPos, goal));
+	indexGraph.at(start) = Node(start, NULL, 0, heursticCost(neighborPos, goal));
+	indexGraph.markExist(start);
 
-	searchList.push(&indexGraph[start]);
+	searchList.push(&indexGraph.at(start));
 
-	closestToGoalNode = &indexGraph[start];
+	closestToGoalNode = &indexGraph.at(start);
 	curNode = NULL;
 
 	while (!goalReached && (!searchLimiter || searchCounter <= searchMax))
@@ -116,24 +112,24 @@ Path Pathfinding::findPathAStarModified(Position start, Position goal, Obstructi
 				neighborPos.moveUnchecked(dir);
 				if (neighborPos.checkSanity() && obstructionMap->isOpen(neighborPos))
 				{
-					if (indexGraph.exists(neighborPos))
+					if (indexGraph.checkExist(neighborPos))
 					{
-						if (curNode->gcost < indexGraph[neighborPos].gcost)
+						if (curNode->gcost < indexGraph.at(neighborPos).gcost)
 						{
-							indexGraph[neighborPos].gcost = curNode->gcost;
-							indexGraph[neighborPos].fcost = indexGraph[neighborPos].gcost + heursticCost(neighborPos, goal);
-							indexGraph[neighborPos].parentNode = curNode;
+							indexGraph.at(neighborPos) = Node(neighborPos, curNode, curNode->gcost, heursticCost(neighborPos, goal));
+							indexGraph.markExist(neighborPos);
 						}
 					}
 					else
 					{
-						indexGraph.set(
-							neighborPos,
-							curNode,
-							curNode->gcost + pathCost(curNode->pos, neighborPos),
-							curNode->gcost + pathCost(curNode->pos, neighborPos) + heursticCost(neighborPos, goal)
-							);
-						searchList.push(&indexGraph[neighborPos]);
+						double travelCost = pathCost(curNode->pos, neighborPos);
+						double newgcost = curNode->gcost + travelCost;
+						double hcost = heursticCost(neighborPos, goal);
+
+						indexGraph.at(neighborPos) = Node(neighborPos, curNode, newgcost, newgcost + hcost);
+						indexGraph.markExist(neighborPos);
+						searchList.push(&indexGraph.at(neighborPos));
+							indexGraph.markExist(neighborPos);
 					}
 				}
 			}
@@ -146,16 +142,18 @@ Path Pathfinding::findPathAStar(Position start, Position goal, ObstructionMap* o
 {
 	goalReached = false;
 
-	indexGraph.set(start, NULL, 0, heursticCost(neighborPos, goal));
+	indexGraph.at(start) = Node(start, NULL, 0, heursticCost(neighborPos, goal));
+	indexGraph.markExist(start);
 
-	openList.push(&indexGraph[start]);
+	openList.push(&indexGraph.at(start));
 
-	closestToGoalNode = &indexGraph[start];
+	closestToGoalNode = &indexGraph.at(start);
 	curNode = NULL;
 
 	while (!openList.empty())
 	{
 		curNode = openList.pop();
+
 		if (curNode->pos == goal)
 			return constructPath(curNode);
 		closedList.push(curNode);
@@ -171,24 +169,24 @@ Path Pathfinding::findPathAStar(Position start, Position goal, ObstructionMap* o
 			{
 				if (!openList.exists(neighborPos) || tempGCost < pathCost(neighborPos, goal))
 				{
-					indexGraph[neighborPos].gcost = tempGCost;
-					indexGraph[neighborPos].fcost = indexGraph[neighborPos].gcost + heursticCost(neighborPos, goal);
-					indexGraph[neighborPos].parentNode = curNode;
+					indexGraph.at(neighborPos) = Node(neighborPos, curNode, tempGCost, heursticCost(neighborPos, goal));
+					indexGraph.markExist(neighborPos);
+
 					if (!openList.exists(neighborPos))
 					{
-						indexGraph.set(
-							neighborPos,
-							curNode,
-							curNode->gcost + pathCost(curNode->pos, neighborPos),
-							curNode->gcost + pathCost(curNode->pos, neighborPos) + heursticCost(neighborPos, goal)
-							);
-						openList.push(&indexGraph[neighborPos]);
+						double travelCost = pathCost(curNode->pos, neighborPos);
+						double newgcost = curNode->gcost + travelCost;
+						double hcost = heursticCost(neighborPos, goal);
+
+						indexGraph.at(neighborPos) = Node(neighborPos, curNode, newgcost, newgcost + hcost);
+						indexGraph.markExist(neighborPos);
+						openList.push(&indexGraph.at(neighborPos));
 					}
 				}
 			}
 		}
 	}
-	return constructPath(&Node());
+	return constructPath(curNode);
 }
 
 // Does not include original position
@@ -211,8 +209,6 @@ Path Pathfinding::constructPath(Node* goal)
 	}
 	std::reverse(path.begin(), path.end());
 
-	for (int i = 0; i < searchQueue.size(); i++)
-		searchQueue.pop();
 	searchList.clear();
 	indexGraph.clear();
 	return path;
@@ -228,30 +224,3 @@ Position Pathfinding::findNextPositionAStar(Position start, Position goal, Obstr
 	return findPathAStar(start, goal, obstructionMap)[0];
 }
 
-void Pathfinding::printPathAsGrid(Path& poslist, ObstructionMap* obsMap)
-{
-	int size_x = obsMap->size_x;
-	int size_y = obsMap->size_y;
-
-	ObstructionMap grid(size_x, size_y);
-
-	for (int i = 0; i < poslist.size(); i++)
-	{
-		grid.set(poslist[i], OT_CONSIDERED);
-	}
-	for (int i = 0; i < size_x; i++)
-		for (int j = 0; j < size_y; j++)
-			if (obsMap->isObstructed(Position(i, j)))
-				grid.set(Position(i, j), OT_OBSTRUCTED);
-
-	std::cout << grid << std::endl;
-}
-
-void Pathfinding::printPathAsCoordinates(Path& poslist)
-{
-	for (int i = 0; i < poslist.size(); i++)
-	{
-		std::cout << poslist[i] << ", ";
-	}
-	std::cout << std::endl;
-}
