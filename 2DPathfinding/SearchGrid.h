@@ -4,18 +4,15 @@
 
 class SearchGrid
 {
-	int x_size, y_size;
-	Grid<Node> graph;
-	Grid<bool> existsGraph;
-	Node* start;
-	Node* current;
+	int sizeX, sizeY;
+	Grid<Node> nodeGrid;
+	Grid<bool> boolGrid;
 public:
-	SearchGrid(int x_size, int y_size);
+	SearchGrid(int sizeX, int sizeY);
 	~SearchGrid();
 	void clear();
-	bool checkExist(Position);
-	void markExist(Position);
-	Node& at(Position);
-	Node& at(Node*);
+	bool checkExists(Position);
+	void add(Node);
+	Node& get(Position);
 };
 

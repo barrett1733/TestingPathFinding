@@ -15,12 +15,11 @@ Path Pathfinding::findPathAStarExper(Position start, Position goal, ObstructionM
 	goalReached = false;
 	searchCounter = 0;
 
-	indexGraph.at(start) = Node(start, NULL, 0, heursticCost(neighborPos, goal));
-	indexGraph.markExist(start);
+	indexGrid.add(Node(start, NULL, 0, heursticCost(neighborPos, goal)));
 
-	searchList.push(&indexGraph.at(start));
+	searchList.push(&indexGrid.get(start));
 
-	closestToGoalNode = &indexGraph.at(start);
+	closestToGoalNode = &indexGrid.get(start);
 	curNode = NULL;
 
 	while (!goalReached && (!searchLimiter || searchCounter <= searchMax))
@@ -31,7 +30,6 @@ Path Pathfinding::findPathAStarExper(Position start, Position goal, ObstructionM
 			return constructPath(closestToGoalNode);
 
 		curNode = searchList.pop();
-		std::cout << *curNode << std::endl;
 
 		// this is questionable
 		if (curNode->fcost < closestToGoalNode->fcost)
@@ -49,12 +47,11 @@ Path Pathfinding::findPathAStarExper(Position start, Position goal, ObstructionM
 				neighborPos.moveUnchecked(dir);
 				if (neighborPos.checkSanity() && obstructionMap->isOpen(neighborPos))
 				{
-					if (indexGraph.checkExist(neighborPos))
+					if (indexGrid.checkExists(neighborPos))
 					{
-						if (curNode->gcost < indexGraph.at(neighborPos).gcost)
+						if (curNode->gcost < indexGrid.get(neighborPos).gcost)
 						{
-							indexGraph.at(neighborPos) = Node(neighborPos, curNode, curNode->gcost, heursticCost(neighborPos, goal));
-							indexGraph.markExist(neighborPos);
+							indexGrid.add(Node(neighborPos, curNode, curNode->gcost, heursticCost(neighborPos, goal)));
 						}
 					}
 					else
@@ -63,9 +60,8 @@ Path Pathfinding::findPathAStarExper(Position start, Position goal, ObstructionM
 						double newgcost = curNode->gcost + travelCost;
 						double hcost = heursticCost(neighborPos, goal);
 
-						indexGraph.at(neighborPos) = Node(neighborPos, curNode, newgcost, newgcost + hcost);
-						indexGraph.markExist(neighborPos);
-						searchList.push(&indexGraph.at(neighborPos));
+						indexGrid.add(Node(neighborPos, curNode, newgcost, newgcost + hcost));
+						searchList.push(&indexGrid.get(neighborPos));
 					}
 				}
 			}
@@ -209,9 +205,15 @@ Path Pathfinding::constructPath(Node* goal)
 	}
 	std::reverse(path.begin(), path.end());
 
+	clear();
+	return path;
+}
+
+void Pathfinding::clear()
+{
 	searchList.clear();
 	indexGraph.clear();
-	return path;
+	indexGrid.clear();
 }
 
 Position Pathfinding::findNextPositionAStarModified(Position start, Position goal, ObstructionMap* obstructionMap)
