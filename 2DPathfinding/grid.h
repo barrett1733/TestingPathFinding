@@ -28,6 +28,7 @@ public:
 
 	int getWidth() const { return sizeX; }
 	int getHeight() const { return sizeY; }
+	
 
 	void alloc(int x, int y)
 	{
@@ -73,24 +74,5 @@ public:
 		else
 			throw std::out_of_range("Grid<>::at() : Out of Range");
 	}
-
-	void set(int x, int y, T value)
-	{
-		grid[x * sizeY + y] = value;
-	}
-
-	// TODO
-	void resize(int x, int y)
-	{
-		/*
-		if (graph == NULL)
-		alloc(x, y);
-		else if (x != sizeX && y != sizeY)
-		{
-
-		}
-		*/
-	}
-
 };
 #endif
