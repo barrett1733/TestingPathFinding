@@ -3,11 +3,16 @@
 
 #include "position.h"
 
+/*
+	A single array is much faster than a 2D array.
+	SB - 4/10/2015
+*/
+
 template <typename T>
 class Grid
 {
-	T ** grid;
 	int sizeX, sizeY;
+	T * grid;
 
 public:
 	Grid() : grid(NULL), sizeX(0), sizeY(0)  {}
@@ -30,9 +35,7 @@ public:
 		{
 			sizeX = x;
 			sizeY = y;
-			grid = new T*[sizeY];
-			for (int y = 0; y < sizeY; y++)
-				grid[y] = new T[sizeX];
+			grid = new T[sizeX * sizeY];
 		}
 	}
 
@@ -40,11 +43,6 @@ public:
 	{
 		if (grid)
 		{
-			for (int y = 0; y < sizeY; y++)
-			{
-				delete[] grid[y];
-				grid[y] = NULL;
-			}
 			delete[] grid;
 			grid = NULL;
 		}
@@ -58,7 +56,7 @@ public:
 	T& at(int x, int y)
 	{
 		if (x >= 0 && x < sizeX && y >= 0 && y < sizeY)
-			return grid[y][x];
+			return grid[x * sizeY + y];
 		else
 			throw std::out_of_range("Grid<>::at() : Out of Range");
 	}
@@ -71,9 +69,14 @@ public:
 	const T& at(int x, int y) const
 	{
 		if (x >= 0 && x < sizeX && y >= 0 && y < sizeY)
-			return grid[y][x];
+			return grid[x * sizeY + y];
 		else
 			throw std::out_of_range("Grid<>::at() : Out of Range");
+	}
+
+	void set(int x, int y, T value)
+	{
+		grid[x * sizeY + y] = value;
 	}
 
 	// TODO
