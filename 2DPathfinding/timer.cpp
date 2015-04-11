@@ -34,3 +34,8 @@ void Timer::printTotal()
 {
 	cout << "Total time taken " << getTotal() << " ms" << endl;
 }
+
+void Timer::clear()
+{
+	durations.clear();
+}

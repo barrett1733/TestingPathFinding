@@ -17,5 +17,6 @@ public:
 	double getTotal();
 	void printAverage();
 	void printTotal();
+	void clear();
 };
 
