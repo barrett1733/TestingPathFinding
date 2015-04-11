@@ -27,16 +27,17 @@ void testingPathfinding()
 	Position::max_y = 10;
 
 	Position start(0, 0);
-	Position goal(5, 0);
+	Position goal(9, 0);
 
 	ObstructionMap testmap1(mapSizeX, mapSizeY);
 	for (int i = 0; i < 8; i++)
 	{
-		testmap1.at(Position(3, i)) = OT_OBSTRUCTED;
+		testmap1.at(Position(5, i)) = OT_OBSTRUCTED;
 	}
 
-	runTests(start, goal, &testmap1, PRINT_GRID | PRINT_TOTAL_TIME, SEARCH_ASTAR | SEARCH_ASTARMOD);
+	runTests(start, goal, &testmap1, PRINT_GRID | PRINT_TOTAL_TIME, SEARCH_ASTAR | SEARCH_ASTARMOD | SEARCH_ASTAREXP);
 
+	
 	////////////////// Large Test
 
 	mapSizeX = 2500; // map size x
@@ -62,10 +63,10 @@ void testingPathfinding()
 	testmap2.at(Position(2, 8)) = OT_OBSTRUCTED;
 
 
-	runTests(start, goal, &testmap2, PRINT_TOTAL_TIME, SEARCH_ASTAREXP | SEARCH_ASTARMOD);
+	runTests(start, goal, &testmap2, PRINT_TOTAL_TIME, SEARCH_ASTAREXP | SEARCH_ASTARMOD | SEARCH_ASTAR);
 
 	/////////////////
-
+	
 	std::cin.ignore();
 
 }
