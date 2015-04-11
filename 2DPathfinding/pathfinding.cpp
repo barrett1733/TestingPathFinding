@@ -60,7 +60,7 @@ Path Pathfinding::findPathAStarExper(Position start, Position goal, ObstructionM
 						double newgcost = curNode->gcost + travelCost;
 						double hcost = heursticCost(neighborPos, goal);
 
-						indexGrid.add(Node(neighborPos, curNode, newgcost, newgcost + hcost));
+						indexGrid.add(Node(neighborPos, curNode, newgcost, hcost));
 						searchList.push(&indexGrid.get(neighborPos));
 					}
 				}
@@ -122,7 +122,7 @@ Path Pathfinding::findPathAStarModified(Position start, Position goal, Obstructi
 						double newgcost = curNode->gcost + travelCost;
 						double hcost = heursticCost(neighborPos, goal);
 
-						indexGraph.at(neighborPos) = Node(neighborPos, curNode, newgcost, newgcost + hcost);
+						indexGraph.at(neighborPos) = Node(neighborPos, curNode, newgcost, hcost);
 						indexGraph.markExist(neighborPos);
 						searchList.push(&indexGraph.at(neighborPos));
 							indexGraph.markExist(neighborPos);
@@ -149,7 +149,6 @@ Path Pathfinding::findPathAStar(Position start, Position goal, ObstructionMap* o
 	while (!openList.empty())
 	{
 		curNode = openList.pop();
-
 		if (curNode->pos == goal)
 			return constructPath(curNode);
 		closedList.push(curNode);
@@ -174,7 +173,7 @@ Path Pathfinding::findPathAStar(Position start, Position goal, ObstructionMap* o
 						double newgcost = curNode->gcost + travelCost;
 						double hcost = heursticCost(neighborPos, goal);
 
-						indexGraph.at(neighborPos) = Node(neighborPos, curNode, newgcost, newgcost + hcost);
+						indexGraph.at(neighborPos) = Node(neighborPos, curNode, newgcost, hcost);
 						indexGraph.markExist(neighborPos);
 						openList.push(&indexGraph.at(neighborPos));
 					}
