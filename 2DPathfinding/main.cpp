@@ -16,13 +16,13 @@
 
 using namespace std;
 
-int main()
+void testingPathfinding()
 {
 	std::cout << "Press enter to start" << std::endl;
 	std::cin.ignore();
-	
+
 	/////////////////// Small Test
-	
+
 	Position::max_x = 10;
 	Position::max_y = 10;
 
@@ -47,6 +47,7 @@ int main()
 	Position::max_y = mapSizeY;
 	//
 
+
 	start = Position(0, 5);
 	goal = Position(50, 5);
 
@@ -66,4 +67,10 @@ int main()
 	/////////////////
 
 	std::cin.ignore();
+
+}
+
+int main()
+{
+	testingPathfinding();
 }

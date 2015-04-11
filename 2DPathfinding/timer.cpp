@@ -32,5 +32,5 @@ void Timer::printAverage()
 
 void Timer::printTotal()
 {
-	cout << "Total time taken " << getTotal() << " microseconds" << endl;
+	cout << "Total time taken " << getTotal() << " ms" << endl;
 }
