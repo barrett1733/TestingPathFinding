@@ -22,32 +22,53 @@ void testingPathfinding()
 	std::cin.ignore();
 
 	/////////////////// Small Test
+	mapSizeX = 10;
+	mapSizeY = 10;
 
-	Position::max_x = 10;
-	Position::max_y = 10;
+	Position::max_x = mapSizeX;
+	Position::max_y = mapSizeY;
 
 	Position start(0, 0);
 	Position goal(9, 0);
 
 	ObstructionMap testmap1(mapSizeX, mapSizeY);
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < mapSizeY - 1; i++)
 	{
 		testmap1.at(Position(5, i)) = OT_OBSTRUCTED;
 	}
 
-	runTests(start, goal, &testmap1, PRINT_GRID | PRINT_TOTAL_TIME, SEARCH_ASTAR | SEARCH_ASTARMOD | SEARCH_ASTAREXP);
+	runTests(start, goal, &testmap1, PRINT_GRID | PRINT_TOTAL_TIME, SEARCH_ASTAR | SEARCH_ASTARMOD);
 
-	
+	/////////////////// Small Test
+	mapSizeX = 10;
+	mapSizeY = 10;
+
+	Position::max_x = mapSizeX;
+	Position::max_y = mapSizeY;
+
+	start = Position(0, 4);
+	goal = Position(9, 4);
+
+	ObstructionMap testmap3(mapSizeX, mapSizeY);
+	std::vector<std::pair<int, int>> obs = {
+			{ 2, 2 }, { 2, 3 }, { 2, 5 }, { 2, 6 }, 
+			{ 3, 1 }, { 3, 2 }, { 3, 6 }, { 3, 7 }, 
+			{ 4, 1 }, { 4, 7 }, 
+			{ 5, 1 }, { 5, 2 }, { 5, 6 }, { 5, 7 }, 
+			{ 6, 2 }, { 6, 3 }, { 6, 4 }, { 6, 5 }, { 6, 6 }
+	};
+	for (int i = 0; i < obs.size(); i++)
+		testmap3.at(Position(obs[i].first, obs[i].second)) = OT_OBSTRUCTED;
+
+	runTests(start, goal, &testmap3, PRINT_GRID | PRINT_TOTAL_TIME, SEARCH_ASTAR | SEARCH_ASTARMOD);
+
 	////////////////// Large Test
 
 	mapSizeX = 2500; // map size x
 	mapSizeY = 2500; // map size y
 
-	// Position needs to know the max size of the world
 	Position::max_x = mapSizeX;
 	Position::max_y = mapSizeY;
-	//
-
 
 	start = Position(0, 5);
 	goal = Position(50, 5);
@@ -63,7 +84,7 @@ void testingPathfinding()
 	testmap2.at(Position(2, 8)) = OT_OBSTRUCTED;
 
 
-	runTests(start, goal, &testmap2, PRINT_TOTAL_TIME, SEARCH_ASTAREXP | SEARCH_ASTARMOD | SEARCH_ASTAR);
+	runTests(start, goal, &testmap2, PRINT_TOTAL_TIME, SEARCH_ASTAREXP | SEARCH_ASTARMOD);
 
 	/////////////////
 	
